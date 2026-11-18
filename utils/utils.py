@@ -1,4 +1,5 @@
 import pickle
+import os
 import torch
 import numpy as np
 import torch.nn as nn
@@ -394,7 +395,10 @@ def get_custom_exp_code(args):
         - args (NameSpace)
     """
     exp_code = '_'.join(args.split_dir.split('_')[:2])
-    dataset_path = 'datasets_csv'
+    # Keep the dataset directory supplied by argparse; only add legacy feature suffixes
+    # when the caller is still using the original datasets_csv base directory.
+    dataset_path = getattr(args, 'dataset_path', 'datasets_csv')
+    use_legacy_dataset_base = os.path.normpath(dataset_path).replace('\\', '/').rstrip('/').endswith('datasets_csv')
     param_code = ''
 
     ### Model Type
@@ -452,10 +456,12 @@ def get_custom_exp_code(args):
     ### Applying Which Features
     if args.apply_sigfeats:
       param_code += '_sig'
-      dataset_path += '_sig'
+      if use_legacy_dataset_base:
+          dataset_path += '_sig'
     elif args.apply_mutsig:
       param_code += '_mutsig'
-      dataset_path += '_mutsig'
+      if use_legacy_dataset_base:
+          dataset_path += '_mutsig'
 
     ### Fusion Operation
     if args.fusion != "None":

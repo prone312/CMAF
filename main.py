@@ -104,14 +104,15 @@ def main(args):
 ### Training settings
 parser = argparse.ArgumentParser(description='Configurations for Survival Analysis on TCGA Data.')
 ### Checkpoint + Misc. Pathing Parameters
-parser.add_argument('--data_root_dir',   type=str, default='/data/run01/scz5319/xly/PORPOISE-master/selec_wsi_pt', help='Data directory to WSI features (extracted via CLAM')
+parser.add_argument('--data_root_dir',   type=str, default='./data', help='Data directory to WSI features (extracted via CLAM')
+parser.add_argument('--dataset_path',    type=str, default='./datasets_csv_mutsig', help='Directory containing the cleaned survival CSV zip files')
 parser.add_argument('--seed', 			 type=int, default=1, help='Random seed for reproducible experiment (default: 1)')
 parser.add_argument('--k', 			     type=int, default=5, help='Number of folds (default: 5)')
 parser.add_argument('--k_start',		 type=int, default=-1, help='Start fold (Default: -1, last fold)')
 parser.add_argument('--k_end',			 type=int, default=-1, help='End fold (Default: -1, first fold)')
 parser.add_argument('--results_dir',     type=str, default='./former_fusion', help='Results directory (Default: ./results)')
 parser.add_argument('--which_splits',    type=str, default='5foldcv', help='Which splits folder to use in ./splits/ (Default: ./splits/5foldcv')
-parser.add_argument('--split_dir',       type=str, default='tcga_coad', help='Which cancer type within ./splits/<which_splits> to use for training. Used synonymously for "task" (Default: tcga_blca_100)')
+parser.add_argument('--split_dir',       type=str, default='tcga_brca', help='Which cancer type within ./splits/<which_splits> to use for training. Used synonymously for "task" (Default: tcga_blca_100)')
 parser.add_argument('--log_data',        action='store_true', default=True, help='Log data using tensorboard')
 parser.add_argument('--overwrite',     	 action='store_true', default=False, help='Whether or not to overwrite experiments (if already ran)')
 parser.add_argument('--task_type',		 type=str, default='survival', choices=['multi_task', 'survival'], help='Multi task or survival')
@@ -157,6 +158,7 @@ parser.add_argument('--reg_type',        type=str, choices=['None', 'omic', 'pat
 parser.add_argument('--lambda_reg',      type=float, default=1e-4, help='L1-Regularization Strength (Default 1e-4)')
 parser.add_argument('--weighted_sample', action='store_true', default=True, help='Enable weighted sampling')
 parser.add_argument('--early_stopping',  action='store_true', default=False, help='Enable early stopping')
+parser.add_argument('--testing',         action='store_true', default=False, help='Enable testing mode in split loaders')
 
 ### CLAM-Specific Parameters
 parser.add_argument('--bag_weight',      type=float, default=0.7, help='clam: weight coefficient for bag-level loss (default: 0.7)')

@@ -1,0 +1,23 @@
+D:\CMAF_random_init_ready\CMAF\.gitignore
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE / editor
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Training outputs & temp artifacts
+former_fusion/
+results/
+events.out.tfevents.*
+*.log
+
+# NOTE: data/tcga_brca_20x_features/pt_files/*.pt (575 mock features)
+# and datasets_csv_mutsig/*.zip are REQUIRED for training — never ignore them.

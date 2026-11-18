@@ -200,6 +200,8 @@ def train(datasets: tuple, cur: int, args: Namespace):
                       'scale_dim2': args.scale_dim2,
                       'skip': args.skip, 'dropinput': args.dropinput, 'path_input_dim': args.path_input_dim,
                       'use_mlp': args.use_mlp}
+        # CMAF is initialized with PyTorch random parameter initialization here.
+        # The original project has no pretrained-weight loading step before training.
         model = CMAF(**model_dict)
 
     else:
@@ -241,7 +243,7 @@ def train(datasets: tuple, cur: int, args: Namespace):
 
         schedular.step()
     torch.save(model.state_dict(), os.path.join(args.results_dir, "s_{}_checkpoint.pt".format(cur)))
-    model.load_state_dict(torch.load(os.path.join(args.results_dir, "s_{}_checkpoint.pt".format(cur))))
+    model.load_state_dict(torch.load(os.path.join(args.results_dir, "s_{}_checkpoint.pt".format(cur)), map_location=torch.device("cuda" if torch.cuda.is_available() else "cpu")))
 
 
     results_val_dict, val_cindex, stage_acc = summary_survival(model, val_loader, args.n_classes, args.mode, args.task_type)
@@ -333,8 +335,9 @@ def train_loop_survival(epoch, model, loader, optimizer, n_classes, mode, task_t
         loss = loss / gc + loss_reg
         loss.backward()
 
-        if max_mem < torch.cuda.memory_allocated():
-            max_mem = torch.cuda.memory_allocated()
+        if device.type == 'cuda':
+            if max_mem < torch.cuda.memory_allocated():
+                max_mem = torch.cuda.memory_allocated()
 
         if (batch_idx + 1) % gc == 0:
             optimizer.step()

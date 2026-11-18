@@ -59,7 +59,7 @@ class TransMIL(nn.Module):
 
 
     def forward(self, h, omic):
-        h = h.unsqueeze(0
+        h = h.unsqueeze(0)
         
         #---->pad
         H = h.shape[1]

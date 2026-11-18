@@ -1,0 +1,16 @@
+D:\CMAF_random_init_ready\CMAF\requirements.txt
+# Verified: Windows + Python 3.10 + CPU, Fold 0 smoke test passed
+# torch pinned to the verified version; others unpinned to avoid
+# replacing versions already present in the working cmaf env.
+torch==2.5.1
+torchvision
+numpy
+pandas
+scipy
+scikit-learn
+h5py
+lifelines
+scikit-survival
+nystrom-attention
+tensorboardX
+einops

@@ -188,7 +188,7 @@ class grl_func(torch.autograd.Function):
  
     @ staticmethod
     def backward(ctx, grad_output):
-        lambda_, = ctx.saved_variables
+        lambda_, = ctx.saved_tensors
         grad_input = grad_output.clone()
         return -1 * grad_input, None
  
